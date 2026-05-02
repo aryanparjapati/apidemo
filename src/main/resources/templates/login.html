@@ -2,77 +2,72 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{base::layout(~{::section})}">
 
-
 <head>
     <meta charset="UTF-8" />
     <title>Login Page</title>
 </head>
 
 <body>
-<section>
+<section class="auth-section">
 
-    <div id="login">
-        <div class="container">
+    <div class="auth-card">
 
-            <div class="row justify-content-center align-items-center">
-                <div class="col-md-6">
+        <!-- Logo -->
+        <div class="text-center mb-3">
+            <img src="/img/images.png" class="logo">
+            <h2>Welcome Back</h2>
+            <p class="text-light">Login to your account</p>
+        </div>
 
-                    <div class="col-md-12">
+        <form th:action="@{/dologin}" method="post">
 
-                        <form class="form" th:action="@{/dologin}" method="post">
-
-                            <h3 class="text-center text-info">Login</h3>
-
-                            <!-- ERROR -->
-                            <div th:if="${param.error}"
-                                 class="alert alert-danger">
-                                Invalid username or password
-                            </div>
-
-                            <!-- LOGOUT -->
-                            <div th:if="${param.logout}"
-                                 class="alert alert-success">
-                                You have been logged out
-                            </div>
-
-                            <!-- USERNAME -->
-                            <div class="form-group">
-                                <label class="text-info">Email:</label>
-                                <input type="text" name="username"
-                                       class="form-control"
-                                       placeholder="Enter email">
-                            </div>
-
-                            <!-- PASSWORD -->
-                            <div class="form-group">
-                                <label class="text-info">Password:</label>
-                                <input type="password" name="password"
-                                       class="form-control"
-                                       placeholder="Enter password">
-                            </div>
-
-                            <div class="text-center">
-                                <input type="submit"
-                                       class="btn btn-info"
-                                       value="Login">
-                            </div>
-
-                            <div class="text-right mt-2">
-                                <a th:href="@{/signup}" class="text-info">
-                                    Register here
-                                </a>
-                            </div>
-
-                        </form>
-
-                    </div>
-
-                </div>
+            <!-- ERROR -->
+            <div th:if="${param.error}" class="alert alert-danger text-center">
+                Invalid username or password
             </div>
 
+            <!-- LOGOUT -->
+            <div th:if="${param.logout}" class="alert alert-success text-center">
+                You have been logged out
+            </div>
+
+            <!-- EMAIL -->
+            <input type="email" name="username"
+                   class="input-field"
+                   placeholder="Enter email" required>
+
+            <!-- PASSWORD -->
+            <div class="password-box">
+                <input type="password" name="password"
+                       id="password"
+                       class="input-field"
+                       placeholder="Enter password" required>
+
+                <span onclick="togglePassword()" class="eye">👁️</span>
+            </div>
+
+            <!-- BUTTON -->
+            <button type="submit" class="login-btn">Login</button>
+
+        </form>
+
+        <!-- SIGNUP -->
+        <div class="switch">
+            Don't have an account?
+            <a th:href="@{/signup}">Register</a>
         </div>
+
     </div>
 
 </section>
+
+<!-- JS for show/hide password -->
+<script>
+    function togglePassword() {
+        const pass = document.getElementById("password");
+        pass.type = pass.type === "password" ? "text" : "password";
+    }
+</script>
+
 </body>
 </html>
