@@ -1,68 +1,121 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{base::layout(~{::section})}">
-
+	th:replace="~{base::layout(~{::section})}">
 <head>
-    <meta charset="UTF-8" />
-    <title>Signup Page</title>
-
-    <!-- External CSS link -->
-    <link rel="stylesheet" th:href="@{/css/signup.css}">
+<meta charset="UTF-8" />
+<title>Signup Page</title>
 </head>
-
 <body>
+	<section>
 
-<section class="auth-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 offset-md-3">
 
-    <div class="auth-card">
+					<div class="my-card mt-2">
+					
+					    <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+  								<p class="text-center" th:text="${session.message.content}"></p>
+  								
+  								<th:block th:text="${#session.removeAttribute('message')}" ></th:block>
+						</div>
+					
+					<div class="container text-center">
+					
+						<img style="width:70px" th:src="@{/img/images.png}" alt="logo"/>
+					</div>
+					
+						<h1 class="text-center">Register Here !!</h1>
 
-        <div class="text-center mb-3">
-            <img th:src="@{/img/images.png}" class="logo" alt="logo">
-            <h2>Create Account</h2>
-            <p>Join Smart Contact Manager</p>
-        </div>
+						<form action="" th:action="@{/do_register}" method="post" th:object="${user}">
 
-        <!-- Message -->
-        <div th:if="${session.message}"
-             th:classappend="${session.message.type}"
-             class="alert text-center">
-            <span th:text="${session.message.content}"></span>
-            <th:block th:text="${#session.removeAttribute('message')}"></th:block>
-        </div>
+							<!-- name fields -->
+							
+							<div  class="form-group">
+								<label for="name_field" class="form-label">Your Name</label>
+								 <input
+								 name="name"
+								  type="text" 
+								  class="form-control"
+								  th:classappend="${#fields.hasErrors('name') ?  'is-invalid':''}"
+								  id="name_field"
+								  placeholder="Enter Name"
+								  required
+								  th:value="${user.name}"
+								   />
+								   
+								    <div class="invalid-feedback" th:each="e : ${#fields.errors('name')}" th:text="${e}">
+     			
+  									 </div>
+								   
+							</div>
+							<!-- Email fields -->
+							
+							<div class="form-group">
+								<label for="email_field" class="form-label">Your Email</label>
+								 <input
+								  type="email" 
+								  name="email"
+								  class="form-control"
+								  id="email_field"
+								  placeholder="Enter email"
+								  required
+								  th:value="${user.email}"
+								  >
+								   
+							</div>
+							<!-- Password fields -->
+							
+							<div class="form-group">
+								<label for="password_field" class="form-label">Your Password</label>
+								 <input
+								  type="password" 
+								  name="password"
+								  class="form-control"
+								  id="password_field"
+								  placeholder="Enter password"
+								  required
+								  >
+								   
+							</div>
+							<!-- user about fields -->
+							
+							<div class="form-group">
+								<textarea name="about" th:value="${user.about}" placeholder="Enter something yourself" rows="5" cols="" class="form-control"></textarea>
+								   
+							</div>
+							
+							<!-- Terms and condition agreement -->
+							
+							<div class="form-group form-check text-center">
+							
+								<input type="checkbox"
+								name="agreement"
+								class="form-check-input"
+								id="agreement"
+								 />
+								 <label for="agreement">Accept terms and conditions</label>
+								
+							</div>
+							
+							<div class="container text-center">
+								<button type="submit" class="btn bg-primary btn-block text-white"> Submit</button>
+								<button type="reset" class="btn btn-warning btn-block"> Reset</button>
+							</div>
+							
+							
 
-        <!-- Form -->
-        <form th:action="@{/do_register}" method="post" th:object="${user}">
+						</form>
 
-            <input type="text" th:field="*{name}" class="form-control mb-2"
-                   placeholder="Full Name" required>
 
-            <input type="email" th:field="*{email}" class="form-control mb-2"
-                   placeholder="Email Address" required>
+					</div>
 
-            <input type="password" th:field="*{password}" class="form-control mb-2"
-                   placeholder="Password" required>
+				</div>
+			</div>
+		</div>
 
-            <textarea th:field="*{about}" class="form-control mb-2"
-                      rows="3" placeholder="Tell us about yourself..."></textarea>
+	</section>
 
-            <div class="form-check text-center mb-3">
-                <input type="checkbox" name="agreement" class="form-check-input" id="agreement">
-                <label for="agreement">Accept terms & conditions</label>
-            </div>
-
-            <button type="submit" class="btn-primary w-100 mb-2">Create Account</button>
-            <button type="reset" class="btn-warning w-100">Reset</button>
-
-        </form>
-
-        <div class="text-center mt-3">
-            Already have an account?
-            <a th:href="@{/signin}">Login</a>
-        </div>
-
-    </div>
-
-</section>
 
 </body>
 </html>
