@@ -31,27 +31,34 @@ public class MyConfig {
         return authProvider;
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+   @Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http
-            .authenticationProvider(authenticationProvider())
+    http
+        .authenticationProvider(authenticationProvider())
 
-            .authorizeHttpRequests(auth -> auth
-    .requestMatchers("/", "/signin", "/signup", "/do_register").permitAll()
-    .requestMatchers("/user/**").hasRole("USER")
-    .requestMatchers("/admin/**").hasRole("ADMIN")
-    .anyRequest().authenticated()
-)
+        .authorizeHttpRequests(auth -> auth
+            // ✅ static resources allow karo
+            .requestMatchers("/img/**", "/css/**", "/js/**").permitAll()
 
-            .formLogin(form -> form
-                .loginPage("/signin")
-                .loginProcessingUrl("/dologin")
-                .defaultSuccessUrl("/user/index", true)
-            )
+            // ✅ public pages
+            .requestMatchers("/", "/signin", "/signup", "/do_register").permitAll()
 
-            .csrf(csrf -> csrf.disable());
+            // ✅ roles
+            .requestMatchers("/user/**").hasRole("USER")
+            .requestMatchers("/admin/**").hasRole("ADMIN")
 
-        return http.build();
-    }
+            .anyRequest().authenticated()
+        )
+
+        .formLogin(form -> form
+            .loginPage("/signin")
+            .loginProcessingUrl("/dologin")
+            .defaultSuccessUrl("/user/index", true)
+        )
+
+        .csrf(csrf -> csrf.disable());
+
+    return http.build();
+}
 }
